@@ -7,7 +7,6 @@ pub fn main() {
   gleeunit.main()
 }
 
-// gleeunit test functions end in `_test`
 pub fn part_1_example_test() {
   let assert Ok(file) = simplifile.read("example.txt")
 
@@ -20,4 +19,9 @@ pub fn part_2_example_test() {
 
   day_2.part_2(file)
   |> should.equal(4)
+}
+
+pub fn part_2_one_line_test() {
+  day_2.part_2("8 6 4 4 1")
+  |> should.equal(1)
 }

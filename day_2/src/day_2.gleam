@@ -10,7 +10,7 @@ import simplifile
 pub fn main() {
   let assert Ok(file) = simplifile.read("input.txt")
   part_1(file) |> io.debug
-  // part_2(file) |> io.debug
+  part_2(file) |> io.debug
 }
 
 pub fn part_1(file: String) {
@@ -27,7 +27,29 @@ pub fn part_1(file: String) {
 }
 
 pub fn part_2(file: String) {
-  todo
+  string.trim(file)
+  |> string.split("\n")
+  |> list.fold(0, fn(acc, row) {
+    let levels =
+      string.split(row, " ")
+      |> list.filter(fn(element) { !string.is_empty(element) })
+      |> list.map(fn(level) { int.parse(level) |> result.unwrap(or: 0) })
+
+    acc
+    + case bool.to_int(validate_row(levels)) {
+      1 -> 1
+      0 -> bool.to_int(validate_with_fault(levels))
+      _ -> 0
+    }
+  })
+}
+
+fn validate_with_fault(levels) {
+  list.index_map(levels, fn(_, index) {
+    let #(left, right) = list.split(levels, index)
+    list.append(left, list.drop(right, 1))
+  })
+  |> list.any(fn(level) { validate_row(level) })
 }
 
 fn validate_row(levels: List(Int)) -> Bool {
